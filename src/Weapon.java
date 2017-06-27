@@ -1,9 +1,10 @@
 
-
 public class Weapon extends Item{
 
-	public Weapon(String itemName, String itemWeight, String itemDescription) {
-		super(itemName, itemDescription, itemDescription);
+	public Weapon(String itemName, float itemWeight, String itemDescription) {
+		super(itemName, itemWeight, itemDescription);
 	}
+	
+	
 	
 }

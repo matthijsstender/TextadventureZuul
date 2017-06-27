@@ -9,7 +9,7 @@ public class Player {
 	public Player(){
 		maxHealth = 100;
 		currentHealth = maxHealth;
-		inventory = new Inventory();
+		inventory = new Inventory(100);
 	}
 	public void showCurrentHealth() {
 		System.out.println(currentHealth);
@@ -63,15 +63,18 @@ public class Player {
         	//damage(10);
         }
     }
+    
+    // get this inv
     public Inventory getInventory() {
     	return this.inventory;
     }
-    public void setInventory(Inventory inventory) {
-    	this.inventory = inventory;
-    }
+    
+    // get current room
 	public Room getCurrentRoom() {
 		return this.currentRoom;
 	}
+	
+	// set current room
 	public void setCurrentRoom(Room room) {
 		this.currentRoom = room;
 	}

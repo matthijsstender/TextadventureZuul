@@ -3,25 +3,23 @@
 public class Item {
 	
 	private String name;
-	private String weight;
+	private float weight;
 	private String description;
 	
-	public Item(String itemName, String itemWeight, String itemDescription) {
+	public Item(String itemName, float itemWeight, String itemDescription) {
 		this.name = itemName;
 		this.weight = itemWeight;
 		this.description = itemDescription;
 	}
-	public void getInfo() {
-		getName();
-		getWeight();
-		getDescription();
-	}
+	// get name
 	public String getName() {
 		return this.name;
 	}
-	public String getWeight() {
+	// get weight
+	public float getWeight() {
 		return this.weight;
 	}
+	// get description
 	public String getDescription() {
 		return this.description;
 	}

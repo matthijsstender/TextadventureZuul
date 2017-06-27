@@ -31,8 +31,10 @@ class Room
     {
         this.description = description;
         exits = new HashMap<String, Room>();
-        inventory = new Inventory();
+        inventory = new Inventory(0);
     }
+    
+    // get this inv
     public Inventory getInventory() {
     	return this.inventory;
     }
@@ -75,19 +77,6 @@ class Room
         for(Iterator<String> iter = keys.iterator(); iter.hasNext(); )
             returnString += " " + iter.next();
         return returnString;
-    }
-    private String getInventoryString() {
-    	String returnString = "";
-    	Set<String> keys = inventory.getItems().keySet();
-    	for(String string : keys) 
-    		returnString += " " + string;
-    	return returnString;
-    }
-    public String getItemInRoom() {
-    	return "There seems to be an item named:" + getInventoryString() + " in this room!";
-    }
-    public String getItemName() {
-    	return getInventoryString();
     }
 
     /**

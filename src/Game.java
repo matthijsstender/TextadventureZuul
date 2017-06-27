@@ -31,7 +31,6 @@ class Game
         player = new Player();
         parser = new Parser();
         createRooms();
-        createItems();
     }
 
     /**
@@ -94,14 +93,17 @@ class Game
         else if (commandWord.equals("search")) {
         	search();
         }
-        else if (commandWord.equals("take") && command.hasSecondWord()) {
+        else if (commandWord.equals("take")) {
         	takeItem(command);
         }
-        else if (commandWord.equals("take") && !command.hasSecondWord()) {
-        	System.out.println("Take what?");
+        else if (commandWord.equals("drop")) {
+        	dropItem(command);
         }
         else if (commandWord.equals("look")) {
             lookAround();
+        }
+        else if (commandWord.equals("inventory")) {
+        	checkInv();
         }
         else if (commandWord.equals("heal")) {
         	player.heal(10);
@@ -115,25 +117,23 @@ class Game
 
     // implementations of user commands:
 
-    private void takeItem(Command command) {
-    	//werkt nog niet
-    	if (player.getCurrentRoom().getItemInRoom() == command.getSecondWord()) {
-    		//player.getCurrentRoom().getInventory().take(command.getSecondWord());
-    		System.out.println("You took the " + command.getSecondWord() + "!");
-    	}
-    	else {
-    		System.out.println("There are no items in this room called "+ command.getSecondWord() + "..");
-    	}
-    }
+    
     private void lookAround() {
     	System.out.println(player.getCurrentRoom());
     }
+    private void dropItem(Command command) {
+    	player.getInventory().drop(command.getSecondWord(), player.getCurrentRoom().getInventory());
+    }
+    private void takeItem(Command command) {
+    	player.getInventory().take(command.getSecondWord(), player.getCurrentRoom().getInventory());
+    }
     private void search() {
-    	if (player.getCurrentRoom().getItemName() == "") {
-    		System.out.println("There are no cool items in this room..");
-    	} else {
-    		System.out.println(player.getCurrentRoom().getItemInRoom());
-    	}
+    	System.out.println("You search in a room and find:");
+    	player.getCurrentRoom().getInventory().printItems();
+    }
+    private void checkInv() {
+    	System.out.println("You are currently carrying:");
+    	player.getInventory().printItems();
     }
     private void goToRoom(Command command) {
     	player.goRoom(command);
@@ -151,13 +151,6 @@ class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
-
-	private void createItems() {
-		Weapon sword = new Weapon("sword", "5 kg", "this is a basic sword that deals 10 damage");
-		//pubBasement.getInventory().take(sword.getName());
-		Inventory pubBasementInv = pubBasement.getInventory();
-		pubBasementInv.addItem("sword", sword);
-	}
 	
     /**
      * Create all the rooms and link their exits together.
@@ -173,7 +166,14 @@ class Game
     	    office = new Room("in the computing admin office");
     	    pubBasement = new Room("inside of the pub's basement");
     	    pubRoof = new Room("on top of the pub's roof");
-    	
+    	    
+    	    Item rock = new Item("rock", 12, "this is a big rock");
+    	    Item glass = new Item("glass", 1, "this is a piece of broken glass");
+    	    
+    	    outside.getInventory().addItem("rock", rock);
+    	    lab.getInventory().addItem("glass", glass);
+    	    
+    	    
     	    // initialise room exits
     	    outside.setExit("east", theatre);
     	    outside.setExit("south", lab);
