@@ -1,4 +1,6 @@
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Player {
 	private Room currentRoom;
@@ -56,7 +58,51 @@ public class Player {
 
         if (nextRoom == null)
             System.out.println("There is no door!");
-        else {
+        else if (nextRoom.isOpen() == false) {
+        	
+        	// check if door is locked with key code (nextroom.haskeycode())
+        	if(nextRoom.hasKeyCode()){
+        		System.out.println("This door is locked with a key code, do you know the code?");
+        		System.out.print("keycode >");
+
+                String inputLine = "";   // will hold the full input line
+        		BufferedReader reader =
+    	        new BufferedReader(new InputStreamReader(System.in));
+    	        try {
+    	            inputLine = reader.readLine();
+    	        }
+    	        catch(java.io.IOException exc) {
+    	            System.out.println ("There was an error during reading: "
+    	                                + exc.getMessage());
+    	        }
+    	        
+    	        if(inputLine.compareTo(nextRoom.getKeyCode()) == 0){
+    	        	
+    	        	// in string
+    	        	System.out.println("The keycode was right!");
+    	            currentRoom = nextRoom;
+    	            //System.out.println(getCurrentRoom());
+    	            System.out.println(currentRoom.getLongDescription());
+    	            currentRoom.openRoom();
+    	            //damage(10);
+    	        }else{
+    	        	// not in string
+    	        	System.out.println("The keycode was wrong!");
+    	        	damage(10);
+    	        	System.out.println("You got shocked and took: 10 damage");
+    	        }
+    	        
+        	}else{
+        		System.out.println("The door is locked, you need a key.");
+        	}
+        	
+        	// if has key code ask code if good open door
+        	// if not true say message and do nothing
+        	
+        	// if door not locked with key code dont open door display message
+        	
+        	//System.out.println("The door is locked, you need a key.");
+        } else {
             currentRoom = nextRoom;
             //System.out.println(getCurrentRoom());
             System.out.println(currentRoom.getLongDescription());

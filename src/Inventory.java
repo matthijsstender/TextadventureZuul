@@ -22,10 +22,13 @@ public class Inventory {
 		}
 		// if can't take
 		if (this.canTake(inventory.getItem(itemName))) {
-			System.out.println("You're too fat, you can't take " + itemName);
+			System.out.println("Your inventory is full, you can't take " + itemName);
 			return;
 		}
-		
+		else if (itemName == null || itemName.isEmpty()){
+			System.out.println("Take what?");
+			return;
+		}
 		System.out.println("There is no item called " + itemName + "..");
 	}
 	
@@ -37,7 +40,10 @@ public class Inventory {
 			System.out.println("You dropped the " + itemName + "!");
 			return;
 		}
-		
+		else if (itemName == null || itemName.isEmpty()){
+			System.out.println("Drop what?");
+			return;
+		}
 		// TODO add message for too much weight
 		
 		System.out.println("You have no item called " + itemName + "..");

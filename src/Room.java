@@ -1,6 +1,8 @@
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /*
  * Class Room - a room in an adventure game.
@@ -21,6 +23,11 @@ class Room
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
 	private Inventory inventory;
+	public Item item;
+	
+	private boolean isOpen = true;
+	private String keyCode = "";
+	private List<Key> keys;
 
     /**
      * Create a room described "description". Initially, it has no exits.
@@ -31,12 +38,73 @@ class Room
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        keys = new ArrayList<Key>();
         inventory = new Inventory(0);
     }
     
     // get this inv
     public Inventory getInventory() {
     	return this.inventory;
+    }
+    // check if room is open
+    public boolean isOpen() {
+    	return isOpen;
+    }
+    // close room
+    public void closeRoom() {
+    	this.isOpen = false;
+    }
+    // open room
+    public void openRoom() {
+    	this.isOpen = true;
+    }
+    // add keys that open room
+    public void addOpenKey(Key key) {
+    	keys.add(key);
+    }
+    
+    public List<Key> getKeys() {
+    	return this.keys;
+    }
+    //check if can open
+    public void canOpen(Key key) {
+    	
+    	Room room = this.getExit("down");
+    	if (room == null)return;
+    	List<Key> _keys = room.getKeys();
+		Iterator it = _keys.iterator();
+		while(it.hasNext()){
+			Key _key = (Key) it.next();
+			if (key.getName().equalsIgnoreCase(_key.getName())){
+				System.out.println("You used your key to open the door");
+				room.openRoom();
+				return;
+			}
+		}
+    }
+    // get closed rooms
+    public ArrayList<Room> getClosedRooms() {
+    	ArrayList<Room> rooms = new ArrayList<Room>();
+    	for(int i = 0; i < exits.size(); i++){
+    		if (this.getExit(getExitString()).isOpen == false) {
+    			rooms.add(this.getExit(getExitString()));
+    		}
+    	}
+    	return rooms;
+    }
+    public void addKeyCode(String _keyCode) {
+    	this.isOpen = false;
+    	keyCode = _keyCode;
+    }
+    public boolean hasKeyCode() {
+    	if(keyCode.compareTo("") == 0){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    public String getKeyCode(){
+    	return keyCode;
     }
 
     /**

@@ -109,6 +109,9 @@ class Game
         	player.heal(10);
         	System.out.println("You have been healed for 10 health");
         }
+        else if (commandWord.equals("use")) {
+        	useItem(command);
+        }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
@@ -119,7 +122,7 @@ class Game
 
     
     private void lookAround() {
-    	System.out.println(player.getCurrentRoom());
+    	System.out.println(player.getCurrentRoom().getLongDescription());
     }
     private void dropItem(Command command) {
     	player.getInventory().drop(command.getSecondWord(), player.getCurrentRoom().getInventory());
@@ -137,6 +140,17 @@ class Game
     }
     private void goToRoom(Command command) {
     	player.goRoom(command);
+    }
+    private void useItem(Command command) {
+    	if (player.getInventory().containsItem(command.getSecondWord())) {
+    		player.getInventory().getItem(command.getSecondWord()).use();
+    		return;
+    	}
+    	else if (command.hasSecondWord()) { 
+    		System.out.println("You don't have an item in your inventory called: " + command.getSecondWord());
+    		return;
+    	}
+    	System.out.println("Use what?");
     }
     /**
      * Print out some help information.
@@ -167,11 +181,20 @@ class Game
     	    pubBasement = new Room("inside of the pub's basement");
     	    pubRoof = new Room("on top of the pub's roof");
     	    
-    	    Item rock = new Item("rock", 12, "this is a big rock");
-    	    Item glass = new Item("glass", 1, "this is a piece of broken glass");
+    	    Weapon rock = new Weapon("rock", 12, "this is a big rock", player);
+    	    Weapon glass = new Weapon("glass", 1, "this is a piece of broken glass", player);
+    	    Key key = new Key("key", 1, "this key can open a door", player);
+    	    Book book = new Book("book", 5, "there seems to be a code inside this book", player);
     	    
     	    outside.getInventory().addItem("rock", rock);
     	    lab.getInventory().addItem("glass", glass);
+    	    office.getInventory().addItem("key", key);
+    	    theatre.getInventory().addItem("book", book);
+    	    
+    	    pubRoof.addKeyCode("420");
+    	    
+    	    pubBasement.addOpenKey(key);
+    	    pubBasement.closeRoom();
     	    
     	    
     	    // initialise room exits
